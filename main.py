@@ -1,10 +1,11 @@
 from menu import *
 
 
-loginMenu = loginMenu()
-noteMenu = noteMenu()
+menu = Menu()
+menu.loginMenu()
+menu.noteMenu()
 
-loginMenu.menu()
-noteMenu.menu()
+
+
 
 

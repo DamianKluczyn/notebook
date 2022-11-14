@@ -1,9 +1,9 @@
 from dbScripts import *
-class loginMenu:
+class Menu:
     db = db()
     def __init__(self):
         self.done = True
-    def menu(self):
+    def loginMenu(self):
         menuOption = 5
         while(self.done):
             print("LOGIN MENU")
@@ -29,11 +29,7 @@ class loginMenu:
                     exit(0)
                 case _:
                     print("Choose option correctly")
-
-class noteMenu:
-    def __init__(self):
-        self.done = True
-    def menu(self):
+    def noteMenu(self):
         menuOption = 5
         while(self.done):
             print("NOTE MENU")
@@ -45,7 +41,8 @@ class noteMenu:
             menuOption = input("Choose: ")
             match menuOption:
                 case "1":
-
+                    if(not self.db.CreateNote()):
+                        print("")
                     self.done = False
                 case "2":
                     print("r")
