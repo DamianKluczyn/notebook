@@ -1,23 +1,29 @@
+from dbScripts import *
 class loginMenu:
+    db = db()
     def __init__(self):
         self.done = True
     def menu(self):
-        option = 5
+        menuOption = 5
         while(self.done):
             print("LOGIN MENU")
             print("1. Login")
             print("2. Register")
             print("0. Exit")
-            option = input("Choose: ")
-            match option:
+            menuOption = input("Choose: ")
+            match menuOption:
                 case "1":
-                    #LOGOWANIE
-                    print("logowanie")
-                    self.done = False
+                    if(not self.db.Login()):
+                        print("Login failed")
+                    else:
+                        print("Login succesfull!")
+                        self.done = False
                 case "2":
-                    print("rejestracja")
-                    #REGISTER
-                    self.done = False
+                    if (not self.db.Register()):
+                        print("Register failed")
+                    else:
+                        print("Register succesfull!")
+                        self.done = False
                 case "0":
                     print("Exiting program...")
                     exit(0)
@@ -28,7 +34,7 @@ class noteMenu:
     def __init__(self):
         self.done = True
     def menu(self):
-        option = 5
+        menuOption = 5
         while(self.done):
             print("NOTE MENU")
             print("1. Create")
@@ -36,11 +42,10 @@ class noteMenu:
             print("3. Update")
             print("4. Delete")
             print("0. Exit")
-            option = input("Choose: ")
-            match option:
+            menuOption = input("Choose: ")
+            match menuOption:
                 case "1":
-                    print("c")
-                    # CREATE
+
                     self.done = False
                 case "2":
                     print("r")
