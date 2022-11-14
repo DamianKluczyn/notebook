@@ -42,20 +42,19 @@ class Menu:
             match menuOption:
                 case "1":
                     if(not self.db.CreateNote()):
-                        print("")
-                    self.done = False
+                        print("Note with same title already exist in your account")
+                    else:
+                        print("Note created successfully")
                 case "2":
                     print("r")
-                    # READ
-                    self.done = False
+                    if(not self.db.ReadeNote()):
+                        print("You dont have any notes yet")
                 case "3":
                     print("u")
                     # UPDATE
-                    self.done = False
                 case "4":
                     print("d")
                     # DELETE
-                    self.done = False
                 case "0":
                     print("Exiting program...")
                     exit(0)
