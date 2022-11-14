@@ -30,6 +30,7 @@ class Menu:
                 case _:
                     print("Choose option correctly")
     def noteMenu(self):
+        self.done = True
         menuOption = 5
         while(self.done):
             print("NOTE MENU")
@@ -46,7 +47,6 @@ class Menu:
                     else:
                         print("Note created successfully")
                 case "2":
-                    print("r")
                     if(not self.db.ReadeNote()):
                         print("You dont have any notes yet")
                 case "3":
