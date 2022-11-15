@@ -133,7 +133,6 @@ class db:
             cur.execute('select title, content, id_account from "Note" where id_account = %s', (self.id,))
 
             rows = cur.fetchall()
-            print("\n")
             counter = 0
             for r in rows:
                 counter += 1
@@ -180,7 +179,6 @@ class db:
 
             rows = cur.fetchall()
             counter = 0
-            print("\n")
             for r in rows:
                 counter += 1
                 print(f"{counter}. {r[0]}")
@@ -191,7 +189,7 @@ class db:
                 else:
                     break
 
-            id_note = rows[2][3]
+            id_note = rows[choose - 1][3]
             title = input("New title: ")
             content = input("New content: ")
 
@@ -206,3 +204,46 @@ class db:
         except(Exception, psycopg2.Error) as error:
             print("Error while fetchng data from PostgreSQL", error)
 
+    def DeleteNote(self):
+        try:
+            # Connect to database
+            con = psycopg2.connect(
+                host='localhost',
+                database='note',
+                user='postgres',
+                password='290e47'
+            )
+            cur = con.cursor()
+
+            # Check if any note exist
+            cur.execute('select count(*) from "Note" where id_account = %s', (self.id,))
+            if (cur.fetchone() == 0):
+                print("You dont have any notes yet")
+                return False
+
+            # Execute query
+            cur.execute('select title, content, id_account, id_note from "Note" where id_account = %s', (self.id,))
+
+            rows = cur.fetchall()
+            counter = 0
+            for r in rows:
+                counter += 1
+                print(f"{counter}. {r[0]}")
+            while(True):
+                choose = int(input("Choose number of note: "))
+                if (choose < 1 or choose > counter):
+                    print("Choose correct number")
+                else:
+                    break
+
+            id_note = rows[choose - 1][3]
+            cur.execute('delete from "Note" where id_note = %s', (id_note,))
+
+            con.commit()
+
+            cur.close()
+            con.close()
+            return True
+
+        except(Exception, psycopg2.Error) as error:
+            print("Error while fetchng data from PostgreSQL", error)

@@ -46,6 +46,7 @@ class Menu:
             menuOption = input("Choose: ")
             match menuOption:
                 case "1":
+                    print("\n")
                     if(not self.db.CreateNote()):
                         print("Note with same title already exist in your account")
                         input("\nPress Enter to continue...\n")
@@ -53,18 +54,24 @@ class Menu:
                         print("Note created successfully")
                         input("\nPress Enter to continue...\n")
                 case "2":
+                    print("\n")
                     if(not self.db.ReadeNote()):
                         print("You dont have any notes yet")
                         input("\nPress Enter to continue...\n")
                 case "3":
+                    print("\n")
                     if(not self.db.UpdateNote()):
                         continue
                     else:
-                        print("Note updated successfully")
+                        print("\nNote updated successfully")
                         input("\nPress Enter to continue...\n")
                 case "4":
-                    print("d")
-                    # DELETE
+                    print("\n")
+                    if(not self.db.DeleteNote()):
+                        continue
+                    else:
+                        print("Note deleted successfully")
+                        input("\nPress Enter to continue...\n")
                 case "0":
                     print("Exiting program...")
                     exit(0)
