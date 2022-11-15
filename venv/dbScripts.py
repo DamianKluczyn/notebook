@@ -1,18 +1,45 @@
 import psycopg2
+import bcrypt
+class database_connection:
+    def __init__(self, login):
+        self.login = login
+        self.con = psycopg2.connect(
+                host='localhost',
+                database='note',
+               user='postgres',
+               password='290e47'
+            )
+        self.cur = self.con.cursor()
+
+class user:
+    def __init__(self, login, password, name):
+        self.login = login
+        self.password = password
+        self.name = name
+
+    def get_login(self):
+        return self.login
+
+    def get_password(self):
+        return self.password
+
+    def get_name(self):
+        return self.name
+
+class hash:
+    def __init__(self, password):
+        self.password = password.encode('utf-8')
+        self.salt = bcrypt.gensalt()
+        self.hashed_password = bcrypt.hashpw(self.password, self.salt)
+
+    def get_hashed_password(self):
+        return self.hashed_password
 
 class db:
     def __init__(self):
         self.id = ""
 
     def Login(self):
-        try:
-            con = psycopg2.connect(
-                host='localhost',
-                database='note',
-               user='postgres',
-               password='290e47'
-            )
-
             login = input("\nLogin: ")
             passw = input("Password: ")
 
@@ -23,32 +50,14 @@ class db:
             for r in rows:
                 if r[0] == login and r[1] == passw:
                     self.id = r[2]
-                    cur.close()
-                    con.close()
                     return True
-            cur.close()
-            con.close()
             return False
-
-        except(Exception, psycopg2.Error) as error:
-            print("Error while fetchng data from PostgreSQL", error)
 
     def Register(self):
         try:
-            #Connect to database
-            con = psycopg2.connect(
-                host='localhost',
-                database='note',
-                user='postgres',
-                password='290e47'
-            )
-
             login = input("\nLogin: ")
             passw = input("Password: ")
             name = input("Name: ")
-
-            #Create cursor
-            cur = con.cursor()
 
             #Execute query
             cur.execute('select login from public."Account"')
