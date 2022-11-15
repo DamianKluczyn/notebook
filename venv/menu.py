@@ -15,14 +15,18 @@ class Menu:
                 case "1":
                     if(not self.db.Login()):
                         print("Login failed")
+                        input("\nPress Enter to continue...\n")
                     else:
                         print("Login succesfull!")
+                        input("\nPress Enter to continue...\n")
                         self.done = False
                 case "2":
                     if (not self.db.Register()):
                         print("Register failed")
+                        input("\nPress Enter to continue...\n")
                     else:
                         print("Register succesfull!")
+                        input("\nPress Enter to continue...\n")
                         self.done = False
                 case "0":
                     print("Exiting program...")
@@ -44,14 +48,20 @@ class Menu:
                 case "1":
                     if(not self.db.CreateNote()):
                         print("Note with same title already exist in your account")
+                        input("\nPress Enter to continue...\n")
                     else:
                         print("Note created successfully")
+                        input("\nPress Enter to continue...\n")
                 case "2":
                     if(not self.db.ReadeNote()):
                         print("You dont have any notes yet")
+                        input("\nPress Enter to continue...\n")
                 case "3":
-                    print("u")
-                    # UPDATE
+                    if(not self.db.UpdateNote()):
+                        continue
+                    else:
+                        print("Note updated successfully")
+                        input("\nPress Enter to continue...\n")
                 case "4":
                     print("d")
                     # DELETE
@@ -59,4 +69,4 @@ class Menu:
                     print("Exiting program...")
                     exit(0)
                 case _:
-                    print("Choose option correctly")
+                    print("Choose option correctly\n")

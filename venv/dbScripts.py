@@ -13,7 +13,7 @@ class db:
                password='290e47'
             )
 
-            login = input("Login: ")
+            login = input("\nLogin: ")
             passw = input("Password: ")
 
             cur = con.cursor()
@@ -33,18 +33,17 @@ class db:
         except(Exception, psycopg2.Error) as error:
             print("Error while fetchng data from PostgreSQL", error)
 
-
     def Register(self):
         try:
             #Connect to database
             con = psycopg2.connect(
                 host='localhost',
-                    database='note',
+                database='note',
                 user='postgres',
                 password='290e47'
             )
 
-            login = input("Login: ")
+            login = input("\nLogin: ")
             passw = input("Password: ")
             name = input("Name: ")
 
@@ -54,7 +53,6 @@ class db:
             #Execute query
             cur.execute('select login from public."Account"')
 
-            #Check if login already exist in database
             rows = cur.fetchall()
             for r in rows:
                if r[0] == login:
@@ -77,8 +75,6 @@ class db:
         except(Exception, psycopg2.Error) as error:
             print("Error while fetchng data from PostgreSQL", error)
 
-
-
     def CreateNote(self):
         try:
             # Connect to database
@@ -91,13 +87,12 @@ class db:
             # Open cursor
             cur = con.cursor()
 
-            title = input("Title od note: ")
-            content = input("Note content: ")
+            title = input("Title: ")
+            content = input("Content: ")
 
             # Execute query
             cur.execute('select title, id_account from "Note"')
 
-            # Check if login already exist in database
             rows = cur.fetchall()
             for r in rows:
                 if r[0] == title and r[1] == self.id:
@@ -117,6 +112,7 @@ class db:
             return True
         except(Exception, psycopg2.Error) as error:
             print("Error while fetchng data from PostgreSQL", error)
+
     def ReadeNote(self):
         try:
             # Connect to database
@@ -136,9 +132,8 @@ class db:
             # Execute query
             cur.execute('select title, content, id_account from "Note" where id_account = %s', (self.id,))
 
-            # Check if login already exist in database
             rows = cur.fetchall()
-
+            print("\n")
             counter = 0
             for r in rows:
                 counter += 1
@@ -162,3 +157,52 @@ class db:
 
         except(Exception, psycopg2.Error) as error:
             print("Error while fetchng data from PostgreSQL", error)
+
+    def UpdateNote(self):
+        try:
+            # Connect to database
+            con = psycopg2.connect(
+                host='localhost',
+                database='note',
+                user='postgres',
+                password='290e47'
+            )
+            cur = con.cursor()
+
+            # Check if any note exist
+            cur.execute('select count(*) from "Note" where id_account = %s', (self.id,))
+            if (cur.fetchone() == 0):
+                print("You dont have any notes yet")
+                return False
+
+            # Execute query
+            cur.execute('select title, content, id_account, id_note from "Note" where id_account = %s', (self.id,))
+
+            rows = cur.fetchall()
+            counter = 0
+            print("\n")
+            for r in rows:
+                counter += 1
+                print(f"{counter}. {r[0]}")
+            while(True):
+                choose = int(input("Choose number of note: "))
+                if (choose < 1 or choose > counter):
+                    print("Choose correct number")
+                else:
+                    break
+
+            id_note = rows[2][3]
+            title = input("New title: ")
+            content = input("New content: ")
+
+            cur.execute('update "Note" set title = %s, content = %s where id_note = %s', (title, content, id_note))
+
+            con.commit()
+
+            cur.close()
+            con.close()
+            return True
+
+        except(Exception, psycopg2.Error) as error:
+            print("Error while fetchng data from PostgreSQL", error)
+
