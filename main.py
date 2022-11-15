@@ -7,6 +7,7 @@ menu.loginMenu()
 
 menu.noteMenu()
 
+#TODO hashowanie hasła
 
 
 
