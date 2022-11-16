@@ -12,10 +12,11 @@ class database_connection:
         self.cur = self.con.cursor()
 
 class user:
-    def __init__(self, login, password, name):
+    def __init__(self, login, password, fname, lname):
         self.login = login
         self.password = password
-        self.name = name
+        self.fname = fname
+        self.lname = lname
 
     def get_login(self):
         return self.login
@@ -23,8 +24,21 @@ class user:
     def get_password(self):
         return self.password
 
-    def get_name(self):
-        return self.name
+    def get_fname(self):
+        return self.fname
+
+    def get_lname(self):
+        return self.lname
+
+class register:
+    def register_new_user(self) -> user:
+        login = input("\nLogin: ")
+        passw = input("Password: ")
+        fname = input("First name: ")
+        lname = input("Last name: ")
+        self.password = hash(passw)
+        self.user = user(login, password, fname, lname)
+        return self.user
 
 class hash:
     def __init__(self, password):
@@ -59,17 +73,18 @@ class db:
             passw = input("Password: ")
             name = input("Name: ")
 
-            #Execute query
+            # Execute query
             cur.execute('select login from public."Account"')
 
             rows = cur.fetchall()
             for r in rows:
-               if r[0] == login:
-                   cur.close()
-                   con.close()
-                   return False
+                if r[0] == login:
+                    cur.close()
+                    con.close()
+                    return False
 
-            cur.execute('insert into public."Account" (login, password, name) values (%s, %s, %s)', (login, passw, name))
+            cur.execute('insert into public."Account" (login, password, name) values (%s, %s, %s)',
+                        (login, passw, name))
 
             cur.execute('SELECT id_account, login FROM "Account" WHERE login = %s', (login,))
             rows = cur.fetchone()
