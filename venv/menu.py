@@ -12,13 +12,10 @@ class loginMenu:
             menuOption = input("Choose: ")
             match menuOption:
                 case "1":
-                    if(not self.db.Login()):
-                        print("Login failed")
-                        input("\nPress Enter to continue...\n")
-                    else:
-                        print("Login succesfull!")
-                        input("\nPress Enter to continue...\n")
-                        self.done = False
+                    while True:
+                        login = input("Login: ")
+                        password = input("Password: ")
+
                 case "2":
                     if (not self.db.Register()):
                         print("Register failed")

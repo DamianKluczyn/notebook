@@ -11,55 +11,58 @@ class database_connection:
             )
         self.cur = self.con.cursor()
 
+class hash:
+        def __init__(self, password):
+            self.password = password.encode('utf-8')
+            self.salt = bcrypt.gensalt()
+            self.hashed_password = bcrypt.hashpw(self.password, self.salt)
+
+        def get_hashed_password(self):
+            return self.hashed_password
+
 class register(database_connection):
     def __init__(self):
         super().__init__("")
-    def register_new_user(self) -> user:
-        login = input("\nLogin: ")
+    def register_new_user(self):
+        login = input("\nLogin: ").lower()
         passw = input("Password: ")
-        fname = input("First name: ")
-        lname = input("Last name: ")
-        self.password = hash(passw)
-        self.user = user(login, password, fname, lname)
-        return self.user
-
-class hash:
-    def __init__(self, password):
-        self.password = password.encode('utf-8')
-        self.salt = bcrypt.gensalt()
-        self.hashed_password = bcrypt.hashpw(self.password, self.salt)
-
-    def get_hashed_password(self):
-        return self.hashed_password
+        fname = input("First name: ").capitalize()
+        lname = input("Last name: ").capitalize()
+        exist = user_exist(self.login)
+        if(not exist):
+            self.password = hash(passw)
+            self.cur.execute('insert into "Account" (login, password, fname, lname) values (%s, %s, %s, %s)',
+                        (login, password, fname, lname))
+            self.con.commit()
+            return True
+        return False
 
 class login(database_connection):
     def __init__(self, login, password):
         super.__init__(login)
         self.login = login
         self.password = password
-        def return_login(self):
-            return self.login
-
-        def return_password(self):
-            return self.password
-class db:
-    def __init__(self):
-        self.id = ""
 
     def Login(self):
-            login = input("\nLogin: ")
-            passw = input("Password: ")
-
-            cur = con.cursor()
-            cur.execute('select login, password, id_account from "Account"')
-
-            rows = cur.fetchall()
-            for r in rows:
-                if r[0] == login and r[1] == passw:
-                    self.id = r[2]
-                    return True
+        exist = user_exist(self.login)
+        if(exist):
+            self.cur.execute('select login, password from "Account" where login = %s', (self.login,))
+            rows = cur.fetchone()
+            if(r[1] == self.password):
+                return True
+        return False
+class user_exist(database_connection):
+    def __init__(self, login):
+        self.login = login
+    def check(self):
+        self.cur.execute('select count(*) from "Account" where login = %s', (self.login,))
+        if (cur.fetchone() == 0):
             return False
+        return True
 
+
+
+class old():
     def Register(self):
         try:
             login = input("\nLogin: ")
