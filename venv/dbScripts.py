@@ -6,31 +6,14 @@ class database_connection:
         self.con = psycopg2.connect(
                 host='localhost',
                 database='note',
-               user='postgres',
-               password='290e47'
+                user='postgres',
+                password='290e47'
             )
         self.cur = self.con.cursor()
 
-class user:
-    def __init__(self, login, password, fname, lname):
-        self.login = login
-        self.password = password
-        self.fname = fname
-        self.lname = lname
-
-    def get_login(self):
-        return self.login
-
-    def get_password(self):
-        return self.password
-
-    def get_fname(self):
-        return self.fname
-
-    def get_lname(self):
-        return self.lname
-
-class register:
+class register(database_connection):
+    def __init__(self):
+        super().__init__("")
     def register_new_user(self) -> user:
         login = input("\nLogin: ")
         passw = input("Password: ")
@@ -49,6 +32,16 @@ class hash:
     def get_hashed_password(self):
         return self.hashed_password
 
+class login(database_connection):
+    def __init__(self, login, password):
+        super.__init__(login)
+        self.login = login
+        self.password = password
+        def return_login(self):
+            return self.login
+
+        def return_password(self):
+            return self.password
 class db:
     def __init__(self):
         self.id = ""

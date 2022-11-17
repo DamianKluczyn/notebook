@@ -1,6 +1,5 @@
 from dbScripts import *
-class Menu:
-    db = db()
+class loginMenu:
     def __init__(self):
         self.done = True
     def loginMenu(self):
@@ -33,8 +32,11 @@ class Menu:
                     exit(0)
                 case _:
                     print("Choose option correctly")
-    def noteMenu(self):
+class noteMenu():
+    def __init__(self):
         self.done = True
+
+    def noteMenu(self):
         menuOption = 5
         while(self.done):
             print("NOTE MENU")
