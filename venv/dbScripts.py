@@ -16,7 +16,6 @@ class hash:
             self.password = password.encode('utf-8')
             self.salt = bcrypt.gensalt()
             self.hashed_password = bcrypt.hashpw(self.password, self.salt)
-
         def get_hashed_password(self):
             return self.hashed_password
 
@@ -60,41 +59,24 @@ class user_exist(database_connection):
             return False
         return True
 
+class create_note(database_connection):
+    def __init__(self):
+        pass
+
+class reade_note(database_connection):
+    def __init__(self):
+        pass
+
+class update_note(database_connection):
+    def __init__(self):
+        pass
+
+class delete_note(database_connection):
+    def __init__(self):
+        pass
 
 
 class old():
-    def Register(self):
-        try:
-            login = input("\nLogin: ")
-            passw = input("Password: ")
-            name = input("Name: ")
-
-            # Execute query
-            cur.execute('select login from public."Account"')
-
-            rows = cur.fetchall()
-            for r in rows:
-                if r[0] == login:
-                    cur.close()
-                    con.close()
-                    return False
-
-            cur.execute('insert into public."Account" (login, password, name) values (%s, %s, %s)',
-                        (login, passw, name))
-
-            cur.execute('SELECT id_account, login FROM "Account" WHERE login = %s', (login,))
-            rows = cur.fetchone()
-            self.id = rows[0]
-
-            # Commit changes
-            con.commit()
-
-            cur.close()
-            con.close()
-            return True
-        except(Exception, psycopg2.Error) as error:
-            print("Error while fetchng data from PostgreSQL", error)
-
     def CreateNote(self):
         try:
             # Connect to database
