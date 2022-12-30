@@ -69,7 +69,7 @@ class login(database_connection):
         if(self.exist.check()):
             super().cur.execute('select login, password from "Account" where login = %s', (self.login,))
             rows = super().cur.fetchone()
-            if(bcrypt.checkpw(self.password.encode('utf-8'),rows[1].encode('utf-8')) == True):
+            if(bcrypt.checkpw(self.passw.encode('utf-8'),rows[1].encode('utf-8')) == True):
                 return True
             print("Zle haslo!")
         return False
@@ -197,7 +197,7 @@ class start_menu:
                     register().register()
                 case 2:
                     log = login().login()
-                    if(log):
+                    if log:
                         note_menu(log)
                 case 0:
                     exit(0)
