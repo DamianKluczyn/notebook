@@ -134,12 +134,16 @@ class update_note(database_connection):
     def __init__(self):
         super().__init__()
     def update_note(self, user):
-        self.cur.execute('select count(*) from "Note" where login = %s;', (user,))
+        self.cur.execute('select id_account from "Account" where login = %s;', (user,))
+        rows = self.cur.fetchone()
+        id = rows[0]
+
+        self.cur.execute('select count(*) from "Note" where id_account = %s;', (id,))
         if (self.cur.fetchone() == 0):
             print("You dont have any notes yet")
             return
 
-        self.cur.execute('select title, content, login, id_note from "Note" where login = %s;', (user,))
+        self.cur.execute('select title, content, id_account, id_note from "Note" where id_account = %s;', (id,))
 
         rows = self.cur.fetchall()
         counter = 0
@@ -164,12 +168,16 @@ class delete_note(database_connection):
     def __init__(self):
         super().__init__()
     def delete_note(self,user):
-        self.cur.execute('select count(*) from "Note" where login = %s;', (user,))
+        self.cur.execute('select id_account from "Account" where login = %s;', (user,))
+        rows = self.cur.fetchone()
+        id = rows[0]
+
+        self.cur.execute('select count(*) from "Note" where id_account = %s;', (id,))
         if (self.cur.fetchone() == 0):
             print("You dont have any notes yet")
             return
 
-        self.cur.execute('select title, content, id_account, id_note from "Note" where login = %s;', (user,))
+        self.cur.execute('select title, content, id_account, id_note from "Note" where id_account = %s;', (id,))
 
         rows = self.cur.fetchall()
         counter = 0
